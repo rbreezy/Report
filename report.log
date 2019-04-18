@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.9.2)  18 APR 2019 16:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.9.2)  18 APR 2019 17:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -607,7 +607,7 @@ LaTeX Font Info:    Font shape `T1/cmss/bx/n' will be
 (Font)              scaled to size 10.39001pt on input line 31.
 LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
 (Font)              scaled to size 9.60007pt on input line 34.
-<logo.png, id=96, 294.09875pt x 254.9525pt>
+<logo.png, id=100, 294.09875pt x 254.9525pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
 Package pdftex.def Info: logo.png  used on input line 40.
@@ -856,7 +856,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--131
 
  []
 
-</home/breezy/Downloads/Drive6.png, id=184, 395.4775pt x 347.2975pt>
+</home/breezy/Downloads/Drive6.png, id=189, 395.4775pt x 347.2975pt>
 File: /home/breezy/Downloads/Drive6.png Graphic file (type png)
 <use /home/breezy/Downloads/Drive6.png>
 Package pdftex.def Info: /home/breezy/Downloads/Drive6.png  used on input line 
@@ -955,12 +955,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 168--169
 
  []
 
-
-Overfull \hbox (2.2821pt too wide) in paragraph at lines 170--171
-\T1/mdbch/m/n/14.4 span mul-ti-ple mod-ules. LTO works by hav-ing a LTO-aware l
-inker
- []
-
 [15]
 Chapter 3.
 
@@ -975,7 +969,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 194--195
 
  []
 
-</home/breezy/Downloads/Drive3.png, id=212, 212.795pt x 181.67876pt>
+</home/breezy/Downloads/Drive3.png, id=217, 212.795pt x 181.67876pt>
 File: /home/breezy/Downloads/Drive3.png Graphic file (type png)
 <use /home/breezy/Downloads/Drive3.png>
 Package pdftex.def Info: /home/breezy/Downloads/Drive3.png  used on input line 
@@ -983,18 +977,12 @@ Package pdftex.def Info: /home/breezy/Downloads/Drive3.png  used on input line
 (pdftex.def)             Requested size: 199.17984pt x 85.35852pt.
 [16
 
- </home/breezy/Downloads/Drive3.png>] [17]
-Overfull \hbox (9.47336pt too wide) in paragraph at lines 213--214
-\T1/mdbch/m/n/14.4 sur-rounded by braces and pre-ceded by an ex-cla-ma-tion poi
-nt).
- []
-
-
+ </home/breezy/Downloads/Drive3.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 213--214
 
  []
 
-
+[17]
 Underfull \hbox (badness 10000) in paragraph at lines 221--222
 
  []
@@ -1009,13 +997,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
 
-[18]
+
 Overfull \hbox (6.93747pt too wide) in paragraph at lines 233--234
 \T1/mdbch/m/n/14.4 Now our next step is to de-sign and im-ple-ment the code/alg
 orithm
  []
 
-[19]
+[18]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 236--237
@@ -1027,9 +1015,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 236--237
 
  []
 
-[20
+[19
 
-] [21]
+] [20]
 Underfull \hbox (badness 10000) in paragraph at lines 262--263
 
  []
@@ -1044,12 +1032,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 271--272
 
  []
 
-[22]
+[21]
 Underfull \hbox (badness 10000) in paragraph at lines 310--311
 
  []
 
-</home/breezy/Downloads/Drive4.png, id=244, 635.37375pt x 213.79875pt>
+</home/breezy/Downloads/Drive4.png, id=245, 635.37375pt x 213.79875pt>
 File: /home/breezy/Downloads/Drive4.png Graphic file (type png)
 <use /home/breezy/Downloads/Drive4.png>
 Package pdftex.def Info: /home/breezy/Downloads/Drive4.png  used on input line 
@@ -1060,7 +1048,7 @@ Overfull \hbox (47.37383pt too wide) in paragraph at lines 313--314
 [][] 
  []
 
-[23 </home/breezy/Downloads/Drive4.png>]
+[22 </home/breezy/Downloads/Drive4.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 325--326
 
  []
@@ -1085,14 +1073,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 340--341
 
  []
 
-[24]
+[23]
 Chapter 5.
 
 Underfull \hbox (badness 10000) in paragraph at lines 346--347
 
  []
 
-[25
+[24
 
 ]
 </home/breezy/Downloads/Drive5.png, id=259, 367.3725pt x 92.345pt>
@@ -1112,7 +1100,7 @@ Overfull \hbox (14.53735pt too wide) in paragraph at lines 360--361
 s
  []
 
-[26 </home/breezy/Downloads/Drive5.png>] [27] [28]
+[25 </home/breezy/Downloads/Drive5.png>] [26] [27]
 Underfull \hbox (badness 10000) in paragraph at lines 413--414
 
  []
@@ -1122,14 +1110,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 421--422
 
  []
 
-[29]
+[28]
 Chapter 6.
 
 Underfull \hbox (badness 10000) in paragraph at lines 429--430
 
  []
 
-[30
+[29
 
 ]
 Chapter 7.
@@ -1138,23 +1126,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 432--433
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 437.
+[30
+
+]
+Chapter 8.
+
+Overfull \hbox (83.11412pt too wide) in paragraph at lines 441--442
+[]\T1/mdbch/b/n/14.4 http://hackage.haskell.org/package/llvm-hs-pure-8.0.0/docs
+/LLVM-
+ []
+
+
+Overfull \hbox (4.85605pt too wide) in paragraph at lines 443--444
+[]\T1/mdbch/b/n/14.4 https://pauladamsmith.com/blog/2015/01/how-to-get-
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 447.
 [31
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 437.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 447.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 437.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 437.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 447.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 447.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: DC8CDD047AA423B3CC9BCD537D554A69;1344.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 437.
+(rerunfilecheck)             Checksum: DE1EF37B4A0E71B7B476E6260BCD9882;1390.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 447.
  ) 
 Here is how much of TeX's memory you used:
- 8325 strings out of 492982
- 120613 string characters out of 6134897
+ 8327 strings out of 492982
+ 120633 string characters out of 6134897
  201492 words of memory out of 5000000
- 11650 multiletter control sequences out of 15000+600000
+ 11651 multiletter control sequences out of 15000+600000
  74432 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,7n,37p,1889b,569s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1172,10 +1175,10 @@ fb></usr/share/texmf/fonts/type1/public/cm-super/sfss1000.pfb></usr/share/texmf
 /fonts/type1/public/cm-super/sfsx1000.pfb></usr/share/texmf/fonts/type1/public/
 cm-super/sfsx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1440.pf
 b>
-Output written on report.pdf (31 pages, 227631 bytes).
+Output written on report.pdf (31 pages, 227583 bytes).
 PDF statistics:
- 347 PDF objects out of 1000 (max. 8388607)
- 288 compressed objects within 3 object streams
- 63 named destinations out of 1000 (max. 500000)
- 210 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 352 PDF objects out of 1000 (max. 8388607)
+ 293 compressed objects within 3 object streams
+ 64 named destinations out of 1000 (max. 500000)
+ 218 words of extra memory for PDF output out of 10000 (max. 10000000)
 

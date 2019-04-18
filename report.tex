@@ -167,7 +167,7 @@ and implementation of the algorithm used for the conversion of LLVM AST into LLV
 	\section{Optimization of LLVM IR}
 	 The dominant aspect of LLVM is its ability to be optimized, both with target-independent optimizations  where  the  IR  is  transformed  to  a  extra  efficient  but  semantically  comparable version, and target-dependent optimizations which occur when translating the IR to assembly language or machine code.\newline
 	 
-	 LLVM also supports link-time optimization (LTO),  which allows for additional optimization opportunities for programs that span multiple modules. LTO works by having a LTO-aware linker use LLVM bit code files instead of normal object code files for linking.
+	 LLVM also supports link-time optimization (LTO),  which allows for additional optimization opportunities for programs that span multiple modules.
 	 
 	\section{Related Work}
 	The LLVM project has been a focus of active research and development in the compiler	community, and because of its modular and reusable design, it has been easy for external
@@ -203,14 +203,14 @@ An AST(Abstract Syntax Tree) is the tree representation of the abstract syntax s
 So the capturing of the AST is the first step for making the backend for LLVM. LLVM AST is the different from the other AST like C, python and all other language. In the LLVM AST the things one have to know before capturing it are :
 
 \begin{itemize}
-	\item \textbf{Module : } LLVM programs are composed of Module's, each of which is a translation unit of the input programs. Each module consists of functions, global variables, and symbol table entries. Modules may be combined together with the LLVM linker, which merges function (and global variable) definitions, resolves forward declarations, and merges symbol table entries. In general, a module is made up of a list of global values (where both functions and global variables are global values). Global values are represented by a pointer to a memory location (in this case, a pointer to an array of char, and a pointer to a function), and have a linkage types.
-	\item \textbf{Basic Block : } Each Module has more than one basic block. Basic block is a packet or in a simple language it consist of local variables and a instruction. Every Basic Block has a Entry point and a exit point which is known as terminators. Basic Block is a type of a function which has a entry and exit.
+	\item \textbf{Module : } LLVM programs are basically made up of module which are generally contained the functions, global variables, and symbol table entries. There can be more than one module and the two module can be linked by the LLVM Linker, which merges the component of the two module like function, global definitions and all the variables used in those modules. In general, a module is made up of a list of global values (where both functions and global variables are global values).
+	\item \textbf{Basic Block : } Each Module has more than one basic block. Basic block is a package or in a simple language it consist of local variables and a instruction. Every Basic Block has a Entry point and a exit point which is known as terminators. Basic Block is a type of a function which has a entry and exit.
 	\item \textbf{Global Variable : } Global Variable in LLVM IR is represented by "@" followed by the name of the global variable name.It can be accessed from anywhere in the context. 
-	\item \textbf{Metadata : }LLVM IR allows metadata to be attached to instructions in the program that can convey extra information about the code to the optimizers and code generator. One example application of metadata is source-level debug information. There are two metadata primitives: strings and nodes.	Metadata does not have a type, and is not a value. If referenced from a call instruction, it uses the metadata type.	All metadata are identified in syntax by a exclamation point (`!').
+	\item \textbf{Metadata : }LLVM IR allows metadata to be attached to instructions in the program that will give the extra valuable information about the code to the optimizers and code generator. All metadata are identified in syntax by a exclamation point (`!').
 	
-	A metadata string is a string surrounded by double quotes. It can contain any character by escaping non-printable characters with "/xx" where "xx" is the two digit hex code. For example: "!"test/00"".
+	A metadata string is only a string covered by double quotes.  For example: "!"test/00"", here 00 is hexadecimal number and it can be any.
 	
-	Metadata nodes are represented with notation similar to structure constants (a comma separated list of elements, surrounded by braces and preceded by an exclamation point). Metadata nodes can have any values as their operand. For example:\newline
+	Metadata nodes can have any values as their operand. For example:\newline
 	
 	\noindent\rule{12cm}{0.4pt}
 	
@@ -220,7 +220,7 @@ So the capturing of the AST is the first step for making the backend for LLVM. L
 	
 	\noindent\rule{12cm}{0.4pt} \newline
 	
-	\item \textbf{Types : } The LLVM type system is one of the most important features of the intermediate representation. Being typed enables a number of optimizations to be performed on the intermediate representation directly, without having to do extra analyses on the side before the transformation. A strong type system makes it easier to read the generated code and enables novel analyses and transformations that are not feasible to perform on normal three address code representations.Types in the LLVM IR is same as expressed in the types in the Chapter Background. For e.g. Int, Float, Double, void etc.
+	\item \textbf{Types : } The LLVM type system is one of the most important features of the intermediate representation. As a typed enables a number of optimizations to be performed on the intermediate representation directly.Types in the LLVM IR is same as expressed in the types in the LLVM website. For e.g. Int, Float, Double, void etc.
 	\item \textbf{Operand : } An Operand is roughly that which is an argument to an Instruction or we can say to a function. Operand can be of three types basically in the LLVM IR which are :
 	1. Local Reference \newline
 	2. Constant \newline
@@ -426,12 +426,22 @@ After running this command we will get the .ll file corresponding to the input A
 For verifying We can just compare the two files ast and .ll that we got.
 
 \chapter{Conclusion}
-This report described the motivations, design, and implementation of a new LLVM bindings end for the MLton SML compiler. The primary goal of the project was to see if leveraging the benefits an LLVM back-end could bring to a compiler would result in a new back-end design that was much simpler yet resulted in outputting excellent quality code, and was not tied to one specific architecture. \newline \newline Background information was presented on the broad design of MLton, its compilation pipeline, and execution model, to give understanding as to where LLVM would fit in the picture and what kind of work would have to be done. The design and implementation of the LLVM bindings was then presented, showing all of the challenges that were faced in its implementation and how they were overcome. 
+This report described the motivations, design, and implementation of a new LLVM bindings end for the MLton SML compiler. The primary goal of the project was to make the both of the two option that is available to us for conversion that is high level assembly or high level language. \newline \newline Background information was presented on the broad design of MLton, its compilation pipeline, and execution model, to give understanding as to where LLVM would fit in the picture and what kind of work would have to be done. The design and implementation of the LLVM bindings was then presented, showing all of the challenges that were faced in its implementation and how they were overcome. 
 
 \chapter{Future Work}
 Although the project met many of the goals that it was set to accomplish, there is still plenty of  room  for  future  improvement,  as   noticed in the report it is not done for all the types and not for all instructions type. \newline
 
 The future work for this will have to add fully all the instruction types and all the types and also to convert any AST into the LLVM AST.
+
+\chapter{References}
+
+\begin{itemize}
+	\item \textbf{http://llvm.org/}  -> LLVM Official website
+	\item \textbf{https://llvm.org/docs/BitCodeFormat.html} -> LLVM binary code format 
+	\item \textbf{http://hackage.haskell.org/package/llvm-hs-pure-8.0.0/docs/LLVM-AST.html} -> LLVM Haskell AST 
+	\item  \textbf{http://llvm.org/doxygen/groupLLVMC.html} -> LLVM C API
+	\item \textbf{https://pauladamsmith.com/blog/2015/01/how-to-get-started-with-llvm-c-api.html} -> More on LLVM C
+\end{itemize}
  
 
 \end{document}
