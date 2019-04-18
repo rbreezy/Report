@@ -1,0 +1,437 @@
+\documentclass[openany]{book}
+\usepackage{graphicx}
+\usepackage[executivepaper,margin=1in]{geometry}
+\usepackage[charter]{mathdesign}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+\usepackage{amsmath}        % Extra math definitions
+\usepackage{graphics}       % PostScript figures
+\usepackage{setspace}       % 1.5 spacing
+%\usepackage{psfig,epsfig}
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{epsfig,color}
+% Custom packages
+%\usepackage[first]{datestamp}   % Datestamp on first page of each chapter
+
+
+\usepackage{color}
+
+%-----------------------------------------------------------------
+\begin{document}
+% ----------------------------------------------------------------
+\begin{titlepage}
+	\begin{center}
+		\textheight 15.5in \textwidth 12.5in {\large\sf  \textbf{LLVM Bindings for SML}}\\[12ex]
+		{\small{\textsl{ \textbf{A B. Tech Project Report Submitted \\
+						in Partial Fulfillment of the Requirements \\
+						for the Degree of
+						\\[3ex]\small \bf Bachelor of Technology}}}}\\[16ex] \emph{by} \\[2ex]
+		{\sf \sf \textbf{Rahul Dhawan}\\
+			(111501023)}\\[1ex]
+		\emph{under the guidance of}\\[2ex]
+		{\sf \bf Dr.Piyush P. Kurur} \\[7ex]
+		
+		\vspace{1.2in}
+		
+		\begin{figure}[!h]
+			\hfill
+			\psfig{file=logo.png,width=0.15\textwidth} \hfill \
+		\end{figure}
+		
+		
+		{\small\bf DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}  \\[1ex]
+		{\small \bf{INDIAN INSTITUTE OF TECHNOLOGY PALAKKAD}}
+		%\\[2ex]
+		%
+		%  {\color{red} \hrule height 0.5ex}
+		% \vskip 1ex
+		% May \the\year 
+	\end{center}
+\end{titlepage}
+
+
+\thispagestyle{plain}
+\chapter*{\centering \underline{CERTIFICATE}}
+\large
+\vskip 2ex \emph{\quad This is to certify that the work contained
+	in this thesis entitled LLVM Bindings for MLton 
+	is a bonafide work of \textbf{Rahul Dhawan}
+	(\textbf{111501023}), carried out in the Department of
+	Computer Science and Engineering, Indian Institute of Technology
+	Palakkad under my supervision and that it has not been submitted
+	elsewhere for a degree.} \vskip 15ex
+
+\begin{flushright}
+	\textbf{}\\
+	Dr. Piyush P. Kurur \\
+	Department of Computer Science \& Engineering \\
+	Indian Institute of Technology Palakkad
+\end{flushright}
+\newpage
+
+
+\begin{center}
+    
+    \huge{\textbf{Abstract}}
+ 
+    \vspace{0.4cm}
+    \large
+    \textbf{An LLVM Back-end for MLton}
+    
+    \vspace{0.4cm}
+    \textbf{Rahul Dhawan}
+ 
+    \vspace{0.4cm}
+    \textbf{Supervising Professor: Dr. Piyush P. Kurur }
+    
+    \vspace{1.0cm}
+    \justify
+    This report presents the design and implementation of a new LLVM support for the ML-ton Standard ML compiler. The motivation of this project is to utilize the features that an LLVM back-end can provide to a compiler.  The LLVM back-end was found to offer a greatly simpler implementation compared to the existing back-ends. The LLVM IR can used for optimization of source code and JIT(Just In Time). So LLVM can be used as optimized code. \newpage
+\end{center}
+
+\thispagestyle{plain}
+\begin{center}
+	
+	\huge{\textbf{Acknowledgment}}
+	\large
+	\vspace{0.4cm}
+	
+	\vspace{1.0cm}
+	The present work is an effort to throw some light on "LLVM Back-end for SML". The work would not have been possible to come to the present shape without the able guidance, supervision and help to me by Dr. Piyush P. Kurur. With the deep sense of gratitude I acknowledge the encouragement and guidance by my organizational guide. I convey my heartful affection to all those people who helped and supported me during the project, for completion of my project report.   
+\end{center}
+
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\chapter{Introduction}
+   \Large
+   As the optimization of the code is a hot topic in the world, everyone is try to optimize the source code so that it will run with less memory and in the less time in comparison to the memory and the time consumed by the original source code. For the above problem  people started to convert the source language code into some other Intermediate Representation, that can be used be for optimization because some IR( Intermediate Representation ) can be optimized more than the original once or they can be optimized more efficiently than the original source code. All the above process is going to be done by the compiler and it is only going to depends on the language in which the compiler is going to be written. Because if that language in which the compiler is written is going to have the support for the conversion of the Source code to the some IR language. Some of the language is having support for converting the source language into some IR language. \newline \newline For the conversion we need to use FFI calls, FFI stands for the foreign function interface which means that we can call for function written in some other language from some other language to use the options provided in the other language because that may not be provided in the language so better to call the other language to use property. In SML there is not interface for LLVM so it is not that easy to direct convert the LLVM AST into the LLVM binary executables for that we are using the C interface of LLVM to convert the AST because SML has FFI support for C so it is easy to convert.\newline \newline One of the IR( intermediate representation ) known is LLVM IR which is used by many languages to convert the LLVM AST into LLVM binary executables or LLVM IR which can be used  to optimize.  The example of these languages are :\newline \newline \begin{itemize}
+   	\item \textbf{C} ---------- Imperative Programming Language
+   	\item \textbf{C++} ---------- OOP (Object Oriented Programming) Language
+   	\item \textbf{Haskell} ---------- Functional Programming Language
+   	\item \textbf{OCaml} ---------- Functional Programming Language\newline \newline
+   \end{itemize}
+	In the both functional programming language they are calling the FFI either to C or C++ because both of the language C and C++ have the LLVM interface.\newline \newline Here to be noticed that many of the functional programming languages have support of LLVM IR to convert like haskell or OCaml. But SML( Standard Meta Language ) do not have this support of LLVM IR till now. In the project we are trying to make the components of the Bindings for the SML bindings for LLVM. Mainly the bindings has main part in the Conversion of the captured IR AST corresponding to the original source code into IR binary executables or it has other option which is not use much that is to convert the captured IR AST corresponding to the original source code into IR readable which is also called pretty printing.\newline \newline For doing all of these we have just want to do the below listed things : \newline \newline \begin{itemize}
+		\item Capture the LLVM AST.
+		\item Converting the LLVM AST into LLVM binary executables.
+		\item Converting the LLVM AST into LLVM IR.\newline \newline
+	\end{itemize} In the first part the capturing the LLVM AST is not so hard we just have to capture the types that is needed or support in the LLVM , and in the third part it’s just the thing we have to match the LLVM AST type capture by us to the LLVM IR syntax that is known by us. But the main things that we have to worry or to concentrate on it is using FFI( Foreign Function Interface )  calls  because we can not convert the LLVM AST into the LLVM binary executable so easy, for that we have to call c interface of LLVM to convert the LLVM AST into the corresponding LLVM binary executables.\newline \newline All these LLVM IR or LLVM binary executables can be used for optimization.The conversion shown in the Figure 1.1.
+	\begin{figure}
+	\centering
+	\includegraphics[width=8cm,height=5cm]{/home/breezy/Downloads/Drive6.png}
+	\caption{Conversion}
+	\label{fig:1.1}
+	\end{figure}
+
+	
+	
+
+	
+	
+The rest of the report is organized as follows. Chapter 2 goes over the Background and Related work . Chapter 3 will cover the capturing of LLVM AST. Chapter 4 describes the design
+and implementation of the algorithm used for the conversion of LLVM AST into LLVM Binary executable . Chapter 5 goes over the design and implementation of the algorithm to convert the LLVM AST into LLVM IR. Chapter 6 gives concluding remarks for this project and ideas for further work
+
+\chapter{Background}
+\Large
+	\section{Back-end Targets}
+	A big challenge in the design of compilers for high-level languages is finding the best way to implement the compiler’s backend. Compiler developers want to use a technique that allows the generated executable to run as efficiently as possible, as that is an important factor in judging the quality of the compiler. However, they also want to minimize the effort in implementing the back-end, ideally by sharing infrastructure with other compilers. That’s the main point that all the compilers are mainly using that to convert into the other IR (Intermediate Representation) Language , which will execute in less time and uses less memory in comparison of the originally source code memory and time taken. But the main question is in which format does we convert into it ? because there are two types that are mainly common that are :\newline \newline \begin{itemize}
+		\item \textbf{High Level Language :} This option is not used very often because to convert from one source code to another source code and then used other compiler to do things again and again will take more time but it will consume less memory. As a fact that it will consume more time people not often used it. It will take time less in execution but the time consider here is  to do whole things at one.
+		\item \textbf{High Level Assembly :} This is the option that all the developers or others used more often because here the two facts that is time and the memory will be less in comparison to the original source code time and memory. As a fact that it will use less memory and time people use often.\newline \newline
+	\end{itemize}
+	As of need we are implementing the both the option in the project. The one thing should be known that these two options are convertible from each other by using the LLVM tools.This project adds to LLVM back-end for MLton with the following supports:\newline \newline \begin{itemize}
+		\item LLVM AST -> LLVM IR
+		\item LLVM AST -> LLVM Binary Executables \newline \newline
+	\end{itemize}
+	
+	\section{What is FFI Calls?}
+	Now as we are converting the LLVM AST into LLVM Binary executables we need to to do FFI calls as discussed in the introduction section.Basically what is FFI calls ? \newline \newline A \textbf{foreign function interface (FFI)} is a mechanism by which a program written in one programming language can call routines or make use of services written in another.The term comes from the language common lisp which means that to make the inter-language calls , this is also used in the Haskell, Ocaml and in others.\newline \newline The primary function of the FFI is to use the functions and the support provided in the language by the other language which will define the FFI using the convention and the semantics of the other language. Here we are using FFI calls to C support of  LLVM from the SML to convert.\newline \newline For more information visit http://mlton.org/ForeignFunctionInterface
+	
+	 
+	\section{What is LLVM ?}
+	As we are capturing the AST for conversion and all. So one should know about the LLVM to capture it.LLVM (which originally stood for Low Level Virtual Machine) is a compiler infrastructure project that defines an intermediate representation(IR) that compilers can use to produce high-performance native code for a target platform. The IR is designed to be both language-agnostic and target-independent, which allows compilers for different languages to take advantage of sharing common functionality for back-end work such as optimizing and target-specific code generation.\newline \newline The most amazing property about the LLVM AST is that it is SSA ( Stactic Single Assignment ) which means that the variable can be used for reading as many times as you can but it can only be assign once in a period or in a code.\newline \newline The more about LLVM and LLVM AST can be found on their official website. \newpage
+	
+
+	\section{Optimization of LLVM IR}
+	 The dominant aspect of LLVM is its ability to be optimized, both with target-independent optimizations  where  the  IR  is  transformed  to  a  extra  efficient  but  semantically  comparable version, and target-dependent optimizations which occur when translating the IR to assembly language or machine code.\newline
+	 
+	 LLVM also supports link-time optimization (LTO),  which allows for additional optimization opportunities for programs that span multiple modules. LTO works by having a LTO-aware linker use LLVM bit code files instead of normal object code files for linking.
+	 
+	\section{Related Work}
+	The LLVM project has been a focus of active research and development in the compiler	community, and because of its modular and reusable design, it has been easy for external
+	projects to take advantage of the features that the project provides. Some of these projects retrofit an LLVM back-end on an existing functional language compiler similar to the goal
+	of this project.
+	
+	\begin{itemize}
+		\item LLVM bindings for Haskell.
+		\item LLVM bindings for OCaml.
+	\end{itemize}
+
+\chapter{Capturing LLVM AST }
+An AST(Abstract Syntax Tree) is the tree representation of the abstract syntax structure of source code written in any programming language. Each node of the tree represent the part of the source code which is going to construct the instruction. The syntax in the tree is abstract it does not contains all the parts of the source code instead of that it only contains the useful part which is sufficient to represent the source code. For e.g.\newline
+
+\noindent\rule{12cm}{0.4pt}
+
+\begin{verbatim}
+	If x > 0
+		Then y
+	Else
+		Then Z 	
+\end{verbatim}
+
+\noindent\rule{12cm}{0.4pt} \newline
+
+
+\begin{figure}
+	\includegraphics[width=7cm,height=3cm]{/home/breezy/Downloads/Drive3.png}
+	\caption{Example}
+	\label{fig:3.1}
+\end{figure}
+
+So the capturing of the AST is the first step for making the backend for LLVM. LLVM AST is the different from the other AST like C, python and all other language. In the LLVM AST the things one have to know before capturing it are :
+
+\begin{itemize}
+	\item \textbf{Module : } LLVM programs are composed of Module's, each of which is a translation unit of the input programs. Each module consists of functions, global variables, and symbol table entries. Modules may be combined together with the LLVM linker, which merges function (and global variable) definitions, resolves forward declarations, and merges symbol table entries. In general, a module is made up of a list of global values (where both functions and global variables are global values). Global values are represented by a pointer to a memory location (in this case, a pointer to an array of char, and a pointer to a function), and have a linkage types.
+	\item \textbf{Basic Block : } Each Module has more than one basic block. Basic block is a packet or in a simple language it consist of local variables and a instruction. Every Basic Block has a Entry point and a exit point which is known as terminators. Basic Block is a type of a function which has a entry and exit.
+	\item \textbf{Global Variable : } Global Variable in LLVM IR is represented by "@" followed by the name of the global variable name.It can be accessed from anywhere in the context. 
+	\item \textbf{Metadata : }LLVM IR allows metadata to be attached to instructions in the program that can convey extra information about the code to the optimizers and code generator. One example application of metadata is source-level debug information. There are two metadata primitives: strings and nodes.	Metadata does not have a type, and is not a value. If referenced from a call instruction, it uses the metadata type.	All metadata are identified in syntax by a exclamation point (`!').
+	
+	A metadata string is a string surrounded by double quotes. It can contain any character by escaping non-printable characters with "/xx" where "xx" is the two digit hex code. For example: "!"test/00"".
+	
+	Metadata nodes are represented with notation similar to structure constants (a comma separated list of elements, surrounded by braces and preceded by an exclamation point). Metadata nodes can have any values as their operand. For example:\newline
+	
+	\noindent\rule{12cm}{0.4pt}
+	
+	\begin{verbatim}
+		!{ !"test\00", i32 10}
+	\end{verbatim}
+	
+	\noindent\rule{12cm}{0.4pt} \newline
+	
+	\item \textbf{Types : } The LLVM type system is one of the most important features of the intermediate representation. Being typed enables a number of optimizations to be performed on the intermediate representation directly, without having to do extra analyses on the side before the transformation. A strong type system makes it easier to read the generated code and enables novel analyses and transformations that are not feasible to perform on normal three address code representations.Types in the LLVM IR is same as expressed in the types in the Chapter Background. For e.g. Int, Float, Double, void etc.
+	\item \textbf{Operand : } An Operand is roughly that which is an argument to an Instruction or we can say to a function. Operand can be of three types basically in the LLVM IR which are :
+	1. Local Reference \newline
+	2. Constant \newline
+	3. Metadata \newline
+\end{itemize}
+	
+	
+	The above mentions are the things that we need to capture in order to capture the AST of the LLVM. After capturing the above things one can represent any LLVM IR code by the LLVM AST capture by us, it will then help us in optimizing the source code further if we want because optimization is the one thing that one can do in LLVM IR.\newline
+	
+	Till now, first part of the project was to understand the LLVM and LLVM IR language and it's implementation. The next step was to understand how the bindings are implemented for other language like Haskell, OCaml.Then the next step was to capture the LLVM AST to represent the LLVM IR and to use it further. Now our next step is to design and implement the code/algorithm to convert the LLVM AST into the LLVM AST into LLVM binary executable.
+	
+\chapter{LLVM AST Into LLVM Binary Executables}
+The LLVM bindings for other functional programming language like Haskell, Ocaml etc have something in common that every language bindings used to call the C API of LLVM or C++ API of LLVM by FFI( Foreign Function Interface). The call by FFI to C API or C++ API is not directly just by the things capture by us in the AST like module, Basic Block etc  because the FFI is just only calls by strings , int , and other types so we have to pass the all the things like module , basic block and all other types as the FFI support and then again made it on the other side form the supported type to LLVM Module , LLVM Basic Block etc then call the LLVM C API or LLVM C++ API to convert the AST that we made into the LLVM Binary executable.\newline \newline 
+
+For the LLVM bindings for SML we have to use LLVM C API because SML has the FFI With the C. The FFI supports only the passage of the following type Int, Float, String or Pointer so in SML we have to convert the capture AST into the types that is allowable to pass through FFI calls. For that we are passing the following things: \newpage
+
+\begin{itemize}
+	\item Module Name  -> string
+	\item Array of the Instruction -> Array of string
+	\subitem Global Variables   
+	\subitem Function 
+	\subitem Instructions of many type like arithmetic, logical, comparitive, calls,load , alloca, store etc.
+	\item Length of the array -> int 
+	\item -1 -> string 
+\end{itemize}
+	
+\section{Why this??}
+Why we are using this approach because we can not send directly the modules and the basic block directly through FFI calls so the approach left is to send the module Name separate because to create module at starting before doing anything because we need module in LLVM C API to do anything and then array of instruction in which every things have given ID's to be identified on the other side and then after identifying the type of instruction we have to build the instruction from the string back to AST by using LLVM C API Instruction builder available.
+
+\section{Work to do}
+As we have to pass only the parameters available in FFI calls so we have to do some changes in both side that is in sml and in c.
+
+\subsection{In SML}
+In sml side we have to give ID's and the parameters to build the same AST on the c side by using these parameters :\newpage
+
+\begin{itemize}
+	\item \textbf{ID 1 :->  GLOBAL VARIABLE }
+	\begin{itemize}
+		\item 	Followed by the name of the variable and then by the type of the variable\newline
+		\begin{itemize}
+			\item  \textbf{INT} 
+			\item  \textbf{FLOAT} \newline
+		\end{itemize}
+	\end{itemize}
+
+	\item  \textbf{ID 2 :-> FUNCTION}
+	\begin{itemize}
+		\item Followed by following things:\newline
+		\begin{itemize}
+			\item \textbf{Name of the function}
+			\item \textbf{Return type of the Function}
+			\subitem \textbf{INT}  
+			\subitem \textbf{FLOAT} 
+			\subitem \textbf{VOID}
+			\item \textbf{Number of parameters}
+			\item \textbf{Parameters type}
+			\subitem \textbf{INT}
+			\subitem \textbf{FLOAT}
+			\item \textbf{Parameters Name}
+			\item \textbf{Number of Basic Block}
+			\item \textbf{BB Name}
+			\item \textbf{Instruction inside the Basic Block}
+			\begin{itemize}
+				\item \textbf{NAME of the BB}
+				\item \textbf{Number of Instruction Inside the BB}
+				\item \textbf{Instructions}		
+				\subitem \textbf{ADD : (ID = 3)} followed by operands
+				\subitem \textbf{SUB : (ID = 4)} followed by operands
+				\subitem \textbf{MUL : (ID = 6)} followed by operands
+				\subitem \textbf{DIV : (ID = 5)} followed by operands
+				\subitem \textbf{ICMP : (ID = 7)} followed by operands
+				\subitem \textbf{AND : (ID = 8)} followed by operands
+				\subitem \textbf{OR : (ID = 9)} followed by operands
+				\subitem \textbf{XOR : (ID = 0)} followed by operands
+				\subitem \textbf{ALLOCA : (ID = 1)} followed by operands
+				\subitem \textbf{STORE : (ID = 2)} followed by operands
+				\item  \textbf{Terminator}
+				\subitem \textbf{RET : (ID = 1)} followed by Return value
+				\subitem \textbf{BR : (ID = 2)} followed by Name of the destination ( BASIC BLOCK )
+				\subitem \textbf{COND : (ID = 3)} followed by condition on which we have to check , name of the true destination basic block, name of the false destination basic block
+			\end{itemize}
+		\end{itemize}
+	\end{itemize} 
+\end{itemize}
+
+\subsection{In C}
+In the c side we have to just make it back to AST by using LLVM C API tools and then call  the LLVM tool to convert the whole module into the binary files.\newline
+
+\begin{figure}[h]
+	\includegraphics[width=15cm]{/home/breezy/Downloads/Drive4.png}
+	\caption{Process of Conversion}
+	\label{fig:4.1}
+\end{figure} \newpage
+
+\section{Commands to Run}
+The below command is to make the call and make the file executable: \newline
+\noindent\rule{12cm}{0.4pt}
+
+\begin{verbatim}
+./make.sh
+\end{verbatim}
+\noindent\rule{12cm}{0.4pt}\newline \newline
+
+
+After this it will convert the AST into Binary Executable.\newline \newline
+
+\section{Verification}
+To verify that we have done the right conversion we have to make back the LLVM IR from the LLVM binary executables by using LLVM tools called llvm-dis and then we can verify then it's correct by comparing the two.
+
+\subsection{Commands to verify}
+\noindent\rule{12cm}{0.4pt}
+
+\begin{verbatim}
+llvm-dis file_name
+\end{verbatim}
+
+\noindent\rule{12cm}{0.4pt}\newline
+
+Now we will have the LLVM IR code then we can verify it by comparing the two.
+
+\chapter{LLVM AST INTO LLVM IR}
+\section{Introduction}
+As in the previous chapter we build the tool that will take LLVM AST of a LLVM IR code and output the LLVM Binary executable corresponding to the LLVM IR that we input. As also mention in the chapter 2 that the target available for the back-end for any language are of four types only two are efficient from the fours, that are converting any AST into the any HIGH LEVEL Language or into the any HIGH LEVEL Assembly. So we did the second part as explain in the previous chapter and we can get the first part also done just by using LLVM tools but we have to do it by pure SML, in simple language all things should be done by the SML, so for that we have to design and implement the tool written in SML that will take the any LLVM AST and then convert the input into the LLVM IR code corresponding to the input LLVM AST. \newline
+
+The conversion that we are doing is also known as pretty printing. Pretty printing is just the reverse process of generating any AST of any language from the an source code of any language.  So it can be view as in fig 5.1.\newpage
+
+\begin{figure}[h]
+	\includegraphics[width=15cm,height=5cm]{/home/breezy/Downloads/Drive5.png}
+	\caption{Process of Conversion}
+	\label{fig:5.1}
+\end{figure} 
+
+\section{Tasks to do}
+As we are writing in pure SML so we have to do some tasks to make it done. The main task is in this process is to decode all type of instruction that is coming from the LLVM AST. Those things are the following:
+
+\begin{itemize}
+	\item \textbf{Module :} As discussed in the chapter 3 the LLVM programs are composed of Module's, each of which is a translation unit of the input programs. Each module consists of functions, global variables, and symbol table entries. Modules may be combined together with the LLVM linker, which merges function (and global variable) definitions, resolves forward declarations, and merges symbol table entries.
+	\item  \textbf{Global Variable :} In the Global Variable we have to decode the two things that are:
+	\subitem \textbf{Type} : Type can be of any supported type.
+	\subitem \textbf{Initializer} : Initializer is the initial value of the global variable.\newpage
+	\item  \textbf{Function :} In the function we have to decode the following listed things:
+	\begin{itemize}
+		\item \textbf{Return Type : } Return type can be decoded as of two types
+		\begin{itemize}
+			\item Int
+			\item Float
+		\end{itemize}
+		\item \textbf{Visiblity : } Visibility of the function can be of two types local or global
+		\begin{itemize}
+			\item Global (@) : It define the scope of the function to be globally, it can be access from everywhere where we want to access.
+			\item Local ("\%") It define the scope of the function to be globally, it can be access from the context in which it define.
+		\end{itemize}
+		\item \textbf{Name :} Name is the name of the function which have to decode to get the name of the function.
+		\item \textbf{Parameters} : Parameters are neede to decode to get the parameters of the function
+		\begin{itemize}
+			\item Type : Type can be decoded as of two types
+			\subitem Int
+			\subitem Float
+			\item Name : Name is the name of the Parameters which have to decode to get the name of the Parameters.
+		\end{itemize}
+		\item \textbf{Basic Block} : Basic block should be decode to get the instructions inside the function.It is described below.
+	\end{itemize}
+	\item \textbf{Basic Block : } Basic block can be decode as follows :
+	\begin{itemize}
+		\item \textbf{Entry : } Decoding entry will give us the name of the entry to the basic block.
+		\item \textbf{Instruction : } Decoding instruction will give us the type of instruction inside the basic block:
+			\subitem Add : Arithmetic operation. 
+			\subitem Sub : Arithmetic operation.
+			\subitem Mul : Arithmetic operation. 
+			\subitem Div : Arithmetic operation.
+			\subitem Eq : Logical operation.
+			\subitem NE : Logical operation.   
+			\subitem UGE : Logical operation.
+			\subitem UGT : Logical operation.
+			\subitem ULT : Logical operation. 
+			\subitem ULE : Logical operation.
+			\subitem SGT : Logical operation.
+			\subitem SGE : Logical operation.
+			\subitem SLT : Logical operation.
+			\subitem SLE : Logical operation.
+		\item \textbf{Terminator : } Decoding terminator will give us the terminator of the basic block and it can be of following types : 
+			\subitem Br : Break.
+			\subitem Ret : Return.
+	\end{itemize}
+\end{itemize}
+ 
+And one thing to be noticed that by using these all we can compose the if-else or for loop with them.\newpage
+
+\section{Commands To Run}
+To run the tool that we just made we have to execute the following commands :\newline
+
+\noindent\rule{12cm}{0.4pt}
+
+\begin{verbatim}
+	sml file_name.sml
+\end{verbatim}
+
+\noindent\rule{12cm}{0.4pt} \newline
+
+After running this command we will get the .ll file corresponding to the input AST file.
+
+\section{Verification}
+For verifying We can just compare the two files ast and .ll that we got.
+
+\chapter{Conclusion}
+This report described the motivations, design, and implementation of a new LLVM bindings end for the MLton SML compiler. The primary goal of the project was to see if leveraging the benefits an LLVM back-end could bring to a compiler would result in a new back-end design that was much simpler yet resulted in outputting excellent quality code, and was not tied to one specific architecture. \newline \newline Background information was presented on the broad design of MLton, its compilation pipeline, and execution model, to give understanding as to where LLVM would fit in the picture and what kind of work would have to be done. The design and implementation of the LLVM bindings was then presented, showing all of the challenges that were faced in its implementation and how they were overcome. 
+
+\chapter{Future Work}
+Although the project met many of the goals that it was set to accomplish, there is still plenty of  room  for  future  improvement,  as   noticed in the report it is not done for all the types and not for all instructions type. \newline
+
+The future work for this will have to add fully all the instruction types and all the types and also to convert any AST into the LLVM AST.
+ 
+
+\end{document}
